@@ -17,25 +17,19 @@ def input_music_file():
 
 def make_graph_music_data(music_file_name):
     tmp_music_data = AudioSegment.from_mp3(music_file_name)
+    music_frame_rate = tmp_music_data.frame_rate
     music_datas = np.array(tmp_music_data.get_array_of_samples())
-    print(len(music_datas))
-    music_data = music_datas[:20000]
-    plt.plot(music_data)
-    plt.show()
 
-    return music_data
+    return music_datas,music_frame_rate
 
-def make_fourier_transform_graph(music_data):
-    print(music_data)
-    fft = np.fft.fft(music_data)
-    print(type(fft))
-    plt.plot(fft)
+def make_spectrum_graph(music_datas,music_frame_rate):
+    pxx, freq, bins, t = plt.specgram(music_datas,Fs=music_frame_rate)
     plt.show()
 
 def main():
     music_file_name = input_music_file()
-    music_data = make_graph_music_data(music_file_name)
-    make_fourier_transform_graph(music_data)
+    music_datas ,music_frame_rate= make_graph_music_data(music_file_name)
+    make_spectrum_graph(music_datas,music_frame_rate)
 
 if __name__ == '__main__':
     main()
